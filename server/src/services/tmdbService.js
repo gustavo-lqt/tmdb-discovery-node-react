@@ -51,9 +51,13 @@ export async function getUpcomingMovies() {
 }
 // Featured "top 1" banner (top trending of the week)
 export async function getHero() {
-  const data = await fetchFromTMDB("/trending/all/week?language=en-US");
-  const top = data.results[0];
-  return toHeroDTO(top);
+  const trending = await fetchFromTMDB("/trending/all/week?language=en-US");
+  const top = trending.results[0];
+  const type = top.media_type || (top.title ? "movie" : "tv");
+
+  const detail = await fetchFromTMDB(`/${type}/${top.id}?language=en-US`);
+
+  return toHeroDTO(detail, type);
 }
 // Full details (movie or tv) including cast, in a single request
 export async function getDetail(type, id) {

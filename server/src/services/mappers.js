@@ -25,8 +25,7 @@ export function toCardDTO(item) {
   };
 }
 // DTO: the featured "top 1" banner on the home page
-export function toHeroDTO(item) {
-  const type = item.media_type || (item.title ? "movie" : "tv");
+export function toHeroDTO(item, type) {
   return {
     id: item.id,
     type,
@@ -34,6 +33,10 @@ export function toHeroDTO(item) {
     backdrop: buildBackdrop(item.backdrop_path),
     about: item.overview,
     rating: Math.round(item.vote_average * 10) / 10,
+    year: (item.release_date || item.first_air_date)?.slice(0, 4) ?? "-",
+    runtime: item.runtime ?? null, // movie
+    seasons: item.number_of_seasons ?? null, // tv
+    episodes: item.number_of_episodes ?? null, // tv
   };
 }
 
@@ -57,6 +60,7 @@ export function toDetailDTO(item, type) {
     rating: Math.round(item.vote_average * 10) / 10,
     cover: buildBackdrop(item.backdrop_path),
     about: item.overview,
+    genres: (item.genres ?? []).map((g) => g.name),
     seasons: item.number_of_seasons ?? null, // null for movies
     episodes: item.number_of_episodes ?? null, // null for movies
     cast: (item.credits?.cast ?? []).slice(0, 10).map(toCastMemberDTO),
