@@ -46,7 +46,7 @@ export async function getTrending(type = "movie") {
 }
 // Upcoming movies (movies only — tv has no upcoming concept on TMDB)
 export async function getUpcomingMovies() {
-  const data = await fetchFromTMDB("/movie/upcoming?language=en-US");
+  const data = await fetchFromTMDB("/movie/upcoming?region=US&language=en-US");
   return data.results.map(toCardDTO);
 }
 // Featured "top 1" banner (top trending of the week)

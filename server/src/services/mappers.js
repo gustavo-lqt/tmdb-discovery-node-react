@@ -59,8 +59,10 @@ export function toDetailDTO(item, type) {
     date: item.release_date || item.first_air_date || null,
     rating: Math.round(item.vote_average * 10) / 10,
     cover: buildBackdrop(item.backdrop_path),
+    poster: buildPoster(item.poster_path),
     about: item.overview,
     genres: (item.genres ?? []).map((g) => g.name),
+    runtime: item.runtime ?? null,
     seasons: item.number_of_seasons ?? null, // null for movies
     episodes: item.number_of_episodes ?? null, // null for movies
     cast: (item.credits?.cast ?? []).slice(0, 10).map(toCastMemberDTO),
